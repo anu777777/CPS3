@@ -1,0 +1,68 @@
+Find the number of strings of a given length that can be formed under the following rules:
+
+• Each letter is a vowel, that is, it is in the set (a, e, i,
+
+o, u}. • The letter a may only be followed by the letter e.
+
+• An e may only be followed by an a or an i.
+
+• An / may not be next to another i.
+
+• The letter o may only be followed by an ior a u. • The letter u may only be followed by an a.
+
+Example
+
+To illustrate some of the rules, start with the string s = 'a' and build to the right.
+
+1. 'a'may only be followed by 'e', so the new string can be 'ae'
+
+2. 'ae' may only be followed by 'a' or '/, so the new string can be 'aea' or 'aei'.
+
+3. 'aea' must be 'aeae'next, and 'aei' can be 'aeia', 'aeie', 'aeio', or 'aeiu' because an 'i'cannot follow another 'i'. Analyses of lengths of strings up to 3 are in the samples below. Since the number of permutations might be very large, return the value modulo (109 +7).
+
+Function Description
+
+Complete the countPerms function in the editor below.
+
+countPerms has the following parameter(s): int n: the length of string to analyze
+
+Returns:
+
+int. the number of permutations, modulo (109
+
++7)
+
+Constraints
+
+• 0<n<105
+
+
+int countPerms(int n) {
+    const int MOD = 1e9 + 7;
+    vector<vector<long long>> dp(n + 1, vector<long long>(5, 0));
+    // Initialize base cases
+    dp[1][0] = dp[1][1] = dp[1][2] = dp[1][3] = dp[1][4] = 1;
+    for (int i = 2; i <= n; i++) {
+        // a can only be preceded by e
+        dp[i][0] = dp[i-1][1] % MOD;
+        // e can be preceded by a or i
+        dp[i][1] = (dp[i-1][0] + dp[i-1][2]) % MOD;
+        // i can be preceded by any vowel except i
+        dp[i][2] = (dp[i-1][0] + dp[i-1][1] + dp[i-1][3] + dp[i-1][4]) % MOD;
+        // o can only be preceded by i or u
+        dp[i][3] = (dp[i-1][2] + dp[i-1][4]) % MOD;
+        // u can only be preceded by a
+        dp[i][4] = dp[i-1][0] % MOD;
+    }
+    // Sum all values of dp[n][j] to get the final result
+    long long ans = 0;
+    for (int j = 0; j < 5; j++) {
+        ans = (ans + dp[n][j]) % MOD;
+    }
+    return ans;
+}
+
+
+
+
+
