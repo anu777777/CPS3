@@ -1,0 +1,21 @@
+Given a list of integers, remove any nodes that have values that have previously occurred in the list and return a reference to the head of the list.
+
+SinglyLinkedListNode* condense(SinglyLinkedListNode* head) {
+  unordered_set<int> seen;
+    SinglyLinkedListNode* curr = head;
+    SinglyLinkedListNode* prev = nullptr;
+    
+    while (curr) {
+        if (seen.count(curr->data)) {
+            prev->next = curr->next;
+            delete curr;
+            curr = prev->next;
+        } else {
+            seen.insert(curr->data);
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+    
+    return head;
+}
