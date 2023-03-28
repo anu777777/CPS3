@@ -1,0 +1,35 @@
+Given an array of numbers, find the index of the smallest array element (the pivot), for which the sums of all elements to the left and to the right are equal. The array may not be reordered.
+
+Example arr=[1,2,3,4,6]
+
+⚫ the sum of the first three elements, 1+2+3=6. The value of the last element is 6.
+
+Using zero based indexing, arr[3]=4 is the pivot
+
+between the two subarrays.
+
+• The index of the pivot is 3.
+
+Function Description
+
+Complete the function balancedSum in the editor below.
+
+balancedSum has the following parameter(s): int arr[n]: an array of integers
+
+Returns:
+
+int: an integer representing the index of the pivot
+
+int balancedSum(vector<int> arr) {
+    int leftSum = 0, rightSum = 0;
+    for (int i = 1; i < arr.size(); i++) {
+        rightSum += arr[i];
+    }
+    int pivot = 0;
+    while (leftSum != rightSum) {
+        leftSum += arr[pivot];
+        rightSum -= arr[pivot + 1];
+        pivot++;
+    }
+    return pivot;
+}
